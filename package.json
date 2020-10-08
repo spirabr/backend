@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "node app.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "eslint": "^7.10.0"
+    "eslint": "^7.10.0",
+    "jest": "^26.5.2"
   }
 }
