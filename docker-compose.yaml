@@ -1,11 +1,29 @@
 version: "3.7"
 
 services:
+  mongo:
+    image: mongo:4.2-bionic
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_DATABASE: spira_database
+    ports:
+      - 27017:27017
+    volumes:
+      - ./src/mock.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - mongodata:/data/db
+
   server:
     build: .
     container_name: spira-backend
     ports:
       - 3000:3000
+    environment:
+      MONGODB_URL: mongodb://mongo:27017
+      MONGODB_DATABASE_NAME: spira_database
     volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules
+      - .:/usr/src/app/
+      - deps:/usr/src/app/node_modules
+
+volumes:
+  deps:
+  mongodata:
