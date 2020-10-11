@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/app.js",
   "scripts": {
-    "dev": "node ./src/app.js",
+    "dev": "nodemon ./src/app.js",
     "lint": "eslint .",
     "test": "jest"
   },
@@ -20,7 +20,8 @@
   "homepage": "https://github.com/spirabr/backend#readme",
   "dependencies": {
     "express": "^4.17.1",
-    "mongodb": "^3.6.2"
+    "mongodb": "^3.6.2",
+    "nodemon": "^2.0.4"
   },
   "devDependencies": {
     "eslint": "^7.10.0",
