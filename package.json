@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "./src/app.js",
+  "type": "module",
   "scripts": {
     "dev": "nodemon ./src/app.js",
     "lint": "eslint .",
+    "lint-fix": "eslint --fix .",
     "test": "jest"
   },
   "repository": {
