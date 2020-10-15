@@ -9,7 +9,7 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./src/mock.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./src/db/mock.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       - mongodata:/data/db
 
   server:

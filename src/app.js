@@ -1,5 +1,5 @@
 import express from 'express';
-import mongoMiddleware from './mongoConnection.js';
+import mongoMiddleware from './db/mongoConnection.js';
 
 const app = express();
 const port = 3000;
