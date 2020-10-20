@@ -13,9 +13,11 @@ router.get("/", mongoMiddleware, async (req, res) => {
 
 router.get("/:cpf", mongoMiddleware, async (req, res) => {
   const cpf = req.params.cpf
+  
   const response = await req.dbConnection
     .collection("records")
     .findOne({cpf});
+    
   res.json({data:response});
 });
 
