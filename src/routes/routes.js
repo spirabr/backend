@@ -7,6 +7,7 @@ router.get("/", mongoMiddleware, async (req, res) => {
   const response = await req.dbConnection
     .collection("records")
     .find({}).toArray();
+
   res.json({data:response});
 });
 
