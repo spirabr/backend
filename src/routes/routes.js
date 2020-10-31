@@ -49,22 +49,32 @@ router.post("/", mongoMiddleware, async (req, res) => {
   }
 });
 
-router.patch("/:cpf", mongoMiddleware, async (req, res) => {
-  const cpf = req.params.cpf;
-  const name = req.body.name;
-  const email = req.body.email;
-  const age = req.body.age;
-  const gender = req.body.gender;
+router.patch("/:patientId", mongoMiddleware, async (req, res) => {
+  const patientId = req.params.patientId;
+  const collector = req.body.collector;
+
+  const sample = await req.dbConnection
+    .collection("samples")
+    .findOne({ patientId });
+
+  if (!sample) {
+    res.status(404).send(`Patient ${patientId} does not exist on database.`);
+  }
+
+  if (!collectorIsValid(collector)) {
+    res.status(400).send("Collector data is invalid.");
+  }
 
   try {
     const response = await req.dbConnection
       .collection("samples")
       .updateOne(
-        { cpf: cpf },
-        { $set: { name: name, email: email, age: age, gender: gender } },
+        { patientId: patientId },
+        { $set: { collector: collector } },
         { upsert: true }
       );
-    res.json({ Response: response });
+
+    res.status(200).json({ response: response });
   } catch (err) {
     res.status(404).json(err.message);
   }
