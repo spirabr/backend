@@ -9,7 +9,7 @@ router.get("/", mongoMiddleware, async (req, res) => {
     .find({})
     .toArray();
 
-  res.json({ data: response });
+  res.status(200).json({ data: response });
 });
 
 router.get("/:patientId", mongoMiddleware, async (req, res) => {
@@ -19,7 +19,7 @@ router.get("/:patientId", mongoMiddleware, async (req, res) => {
     .collection("samples")
     .findOne({ patientId });
 
-  res.json({ data: response });
+  res.status(200).json({ data: response });
 });
 
 router.post("/", mongoMiddleware, async (req, res) => {
@@ -80,14 +80,15 @@ router.patch("/:patientId", mongoMiddleware, async (req, res) => {
   }
 });
 
-router.delete("/:cpf", mongoMiddleware, async (req, res) => {
-  const cpf = req.params.cpf;
+router.delete("/:patientId", mongoMiddleware, async (req, res) => {
+  const patientId = req.params.patientId;
 
   try {
     const response = await req.dbConnection
       .collection("samples")
-      .deleteOne({ cpf: cpf });
-    res.json({ Response: response });
+      .deleteOne({ patientId });
+
+    res.status(200).json({ response: response });
   } catch (err) {
     res.status(404).json(err.message);
   }
