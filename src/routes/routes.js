@@ -51,7 +51,7 @@ router.post("/", mongoMiddleware, async (req, res) => {
 
 router.patch("/:patientId", mongoMiddleware, async (req, res) => {
   const patientId = req.params.patientId;
-  const collector = req.body.collector;
+  const { collector, audioUrl1, audioUrl2, audioUrl3, audioUrl4 } = req.body;
 
   const sample = await req.dbConnection
     .collection("samples")
@@ -65,12 +65,20 @@ router.patch("/:patientId", mongoMiddleware, async (req, res) => {
     res.status(400).send("Collector data is invalid.");
   }
 
+  const updatesFromBody = {
+    collector,
+    audioUrl1,
+    audioUrl2,
+    audioUrl3,
+    audioUrl4,
+  };
+
   try {
     const response = await req.dbConnection
       .collection("samples")
       .updateOne(
         { patientId: patientId },
-        { $set: { collector: collector } },
+        { $set: getSampleUpdateObj(updatesFromBody) },
         { upsert: true }
       );
 
@@ -96,6 +104,15 @@ router.delete("/:patientId", mongoMiddleware, async (req, res) => {
 
 function collectorIsValid(collector) {
   return collector && collector.name && collector.hospital;
+}
+
+function getSampleUpdateObj(updatesFromBody) {
+  return Object.entries(updatesFromBody)
+    .filter(([_, value]) => value !== null)
+    .reduce((acc, [key, value]) => {
+      acc[key] = value;
+      return acc;
+    }, {});
 }
 
 export default router;
