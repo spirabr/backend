@@ -12,12 +12,12 @@ router.get("/", mongoMiddleware, async (req, res) => {
   res.json({ data: response });
 });
 
-router.get("/:cpf", mongoMiddleware, async (req, res) => {
-  const cpf = req.params.cpf;
+router.get("/:patientId", mongoMiddleware, async (req, res) => {
+  const patientId = req.params.patientId;
 
   const response = await req.dbConnection
     .collection("samples")
-    .findOne({ cpf });
+    .findOne({ patientId });
 
   res.json({ data: response });
 });
