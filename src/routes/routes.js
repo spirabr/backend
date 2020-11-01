@@ -27,6 +27,7 @@ router.post("/", mongoMiddleware, async (req, res) => {
 
   if (!patientId || !collectorIsValid(collector)) {
     res.status(400).send("Patient id or collector data is invalid.");
+    return;
   }
 
   const sample = {
@@ -59,14 +60,18 @@ router.patch("/:patientId", mongoMiddleware, async (req, res) => {
 
   if (!sample) {
     res.status(404).send(`Patient ${patientId} does not exist on database.`);
-  }
-
-  if (!collectorIsValid(collector)) {
-    res.status(400).send("Collector data is invalid.");
+    return;
   }
 
   const updatesFromBody = {
-    collector,
+    collector: {
+      name:
+        collector && collector.name ? collector.name : sample.collector.name,
+      hospital:
+        collector && collector.hospital
+          ? collector.hospital
+          : sample.collector.hospital,
+    },
     audioUrl1,
     audioUrl2,
     audioUrl3,
@@ -107,12 +112,11 @@ function collectorIsValid(collector) {
 }
 
 function getSampleUpdateObj(updatesFromBody) {
-  return Object.entries(updatesFromBody)
-    .filter(([_, value]) => value !== null)
-    .reduce((acc, [key, value]) => {
-      acc[key] = value;
-      return acc;
-    }, {});
+  return Object.entries(updatesFromBody).reduce((acc, [key, value]) => {
+    if (value) acc[key] = value;
+
+    return acc;
+  }, {});
 }
 
 export default router;
