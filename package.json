@@ -33,5 +33,9 @@
     "jest": "^26.5.2",
     "nodemon": "^2.0.4",
     "prettier": "2.1.2"
+  },
+  "jest": {
+    "clearMocks": true,
+    "testEnvironment": "node"
   }
 }
