@@ -14,4 +14,4 @@ jobs:
       - name: Sobe docker-compose up
         run: docker-compose up --build -d
       - name: Roda testes
-        run: docker-compose run --rm server npm run test --forceExit
+        run: docker-compose run --rm server yarn test --forceExit
