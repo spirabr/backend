@@ -18,11 +18,7 @@ describe("'/' route handlers", () => {
 
   afterAll(async () => db.close());
 
-  it("GET should return all samples", async () => {
-    const { body } = await request(app).get("/");
-
-    expect(body.data).toBeDefined();
-  });
+  it.todo("GET should return all samples");
   it.todo("POST should return created sample");
 
   it.todo("POST should return 401 if input is invalid");
