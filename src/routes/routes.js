@@ -1,6 +1,18 @@
 import express from "express";
 import mongoMiddleware from "../db/mongoConnection.js";
 
+function collectorIsValid(collector) {
+  return collector && collector.name && collector.hospital;
+}
+
+function getSampleUpdateObj(updatesFromBody) {
+  return Object.entries(updatesFromBody).reduce((acc, [key, value]) => {
+    if (value) acc[key] = value;
+
+    return acc;
+  }, {});
+}
+
 const router = express.Router();
 
 router.get("/", mongoMiddleware, async (req, res) => {
@@ -13,7 +25,7 @@ router.get("/", mongoMiddleware, async (req, res) => {
 });
 
 router.get("/:patientId", mongoMiddleware, async (req, res) => {
-  const patientId = req.params.patientId;
+  const { patientId } = req.params;
 
   const response = await req.dbConnection
     .collection("samples")
@@ -31,8 +43,8 @@ router.post("/", mongoMiddleware, async (req, res) => {
   }
 
   const sample = {
-    patientId: patientId,
-    collector: collector,
+    patientId,
+    collector,
     audioUrl1: "",
     audioUrl2: "",
     audioUrl3: "",
@@ -44,14 +56,14 @@ router.post("/", mongoMiddleware, async (req, res) => {
       .collection("samples")
       .insertOne(sample);
 
-    res.status(201).json({ response: response });
+    res.status(201).json({ response });
   } catch (err) {
     res.status(500).json(err.message);
   }
 });
 
 router.patch("/:patientId", mongoMiddleware, async (req, res) => {
-  const patientId = req.params.patientId;
+  const { patientId } = req.params;
   const { collector, audioUrl1, audioUrl2, audioUrl3, audioUrl4 } = req.body;
 
   const sample = await req.dbConnection
@@ -82,41 +94,29 @@ router.patch("/:patientId", mongoMiddleware, async (req, res) => {
     const response = await req.dbConnection
       .collection("samples")
       .updateOne(
-        { patientId: patientId },
+        { patientId },
         { $set: getSampleUpdateObj(updatesFromBody) },
         { upsert: true }
       );
 
-    res.status(200).json({ response: response });
+    res.status(200).json({ response });
   } catch (err) {
     res.status(404).json(err.message);
   }
 });
 
 router.delete("/:patientId", mongoMiddleware, async (req, res) => {
-  const patientId = req.params.patientId;
+  const { patientId } = req.params;
 
   try {
     const response = await req.dbConnection
       .collection("samples")
       .deleteOne({ patientId });
 
-    res.status(200).json({ response: response });
+    res.status(200).json({ response });
   } catch (err) {
     res.status(404).json(err.message);
   }
 });
-
-function collectorIsValid(collector) {
-  return collector && collector.name && collector.hospital;
-}
-
-function getSampleUpdateObj(updatesFromBody) {
-  return Object.entries(updatesFromBody).reduce((acc, [key, value]) => {
-    if (value) acc[key] = value;
-
-    return acc;
-  }, {});
-}
 
 export default router;
