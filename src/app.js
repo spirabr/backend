@@ -1,6 +1,6 @@
 import express from "express";
-import routes from "./routes/routes.js";
 import bodyParser from "body-parser";
+import routes from "./routes/routes.js";
 
 const app = express();
 const port = process.env.PORT;
