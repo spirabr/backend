@@ -1,15 +1,22 @@
 import express from "express";
 import bodyParser from "body-parser";
-import routes from "./routes/routes.js";
 
-const app = express();
+import router from "./routes/routes.js";
+import { setupDb } from "./db/mongoConnection";
+
+// eslint-disable-next-line import/prefer-default-export
+export const app = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(routes);
+app.use(router);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+const start = async () => {
+  await setupDb();
+
+  app.listen(port, () => console.log(`server running on port ${port}`));
+};
+
+start();
