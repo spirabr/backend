@@ -12,12 +12,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js 
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - run: npm install
-    - run: npm run build --if-present
-    - run: npm test
-      env:
-        CI: true
+    - name: Sobe docker-compose up
+      run: docker-compose up --build -d
+    - name: Roda testes
+      run: docker-compose run --rm server npm run test
+    # - name: Use Node.js 
+    #   uses: actions/setup-node@v1
+    #   with:
+    #     node-version: 12.x
+    # - run: npm install
+    # - run: npm run build --if-present
+    # - run: npm test
+     env:
+      CI: true
