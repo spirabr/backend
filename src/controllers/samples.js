@@ -13,7 +13,7 @@ function getSampleUpdateObj(updatesFromBody) {
 export async function getAll(req, res) {
   const response = await req.dbConnection
     .collection("samples")
-    .find({})
+    .find({}, { projection: { _id: 0 } })
     .toArray();
 
   res.status(200).json({ data: response });
@@ -37,9 +37,19 @@ export async function create(req, res) {
   };
 
   try {
-    const response = await req.dbConnection
+    const result = await req.dbConnection
       .collection("samples")
       .insertOne(sample);
+
+    let response = {};
+
+    if (result.ok) {
+      response = sample;
+    } else {
+      res.status(500).json({ error: "Could not create sample" });
+
+      return;
+    }
 
     res.status(201).json({ response });
   } catch (err) {
