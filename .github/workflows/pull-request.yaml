@@ -14,10 +14,6 @@ jobs:
       - name: Build server image
         run: docker-compose build
       - name: Start mongo service
-        run: docker-compose up mongo -d
-      # - name: Sleep to give time for MongoDB to set itself up
-      #   uses: jakejarvis/wait-action@master
-      #   with:
-      #     time: "5s"
+        run: docker-compose up -d mongo
       - name: Run tests
         run: docker-compose run --rm server yarn test --forceExit
