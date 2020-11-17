@@ -2,6 +2,10 @@ function collectorIsValid(collector) {
   return collector && collector.name && collector.hospital;
 }
 
+function patientIdIsValid(id) {
+  return typeof id === "string" && id.trim().length > 0;
+}
+
 function getSampleUpdateObj(updatesFromBody) {
   return Object.entries(updatesFromBody).reduce((acc, [key, value]) => {
     if (value) acc[key] = value;
@@ -22,7 +26,7 @@ export async function getAll(req, res) {
 export async function create(req, res) {
   const { patientId, collector } = req.body;
 
-  if (!patientId || !collectorIsValid(collector)) {
+  if (!patientIdIsValid(patientId) || !collectorIsValid(collector)) {
     res.status(400).send("Patient id or collector data is invalid.");
     return;
   }
@@ -62,9 +66,9 @@ export async function getSampleByPatientId(req, res) {
 
   const response = await req.dbConnection
     .collection("samples")
-    .findOne({ patientId });
+    .findOne({ patientId }, { projection: { _id: 0 } });
 
-  res.status(200).json({ data: response });
+  res.status(200).json({ response });
 }
 
 export async function updateSample(req, res) {
