@@ -15,9 +15,9 @@ describe("'/' route handlers", () => {
   beforeEach(async () => {
     await db.collection("samples").drop();
 
-    db.createCollection("samples");
+    await db.createCollection("samples");
 
-    db.collection("samples").insertMany([
+    await db.collection("samples").insertMany([
       {
         patientId: "9124192448",
         collector: {
@@ -99,14 +99,16 @@ describe("'/' route handlers", () => {
   });
 
   it("POST should return created sample", async () => {
-    const { body } = await request(app)
+    const { body, status } = await request(app)
       .post("/")
       .send({
         patientId: "12334",
         collector: { name: "SPIRA test", hospital: "Test" },
       });
 
-    expect(body.data).toEqual({
+    expect(status).toBe(201);
+
+    expect(body.response).toEqual({
       patientId: "12334",
       collector: { name: "SPIRA test", hospital: "Test" },
       audioUrl1: "",
