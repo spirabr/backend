@@ -37,21 +37,21 @@ export async function create(req, res) {
   };
 
   try {
-    const result = await req.dbConnection
+    const insertionResult = await req.dbConnection
       .collection("samples")
       .insertOne(sample);
 
-    let response = {};
+    if (insertionResult.result.ok) {
+      const { _id, ...sampleWithoutId } = sample;
 
-    if (result.ok) {
-      response = sample;
-    } else {
-      res.status(500).json({ error: "Could not create sample" });
+      const response = sampleWithoutId;
+
+      res.status(201).json({ response });
 
       return;
     }
 
-    res.status(201).json({ response });
+    res.status(500).json({ error: "Could not create sample" });
   } catch (err) {
     res.status(500).json(err.message);
   }
