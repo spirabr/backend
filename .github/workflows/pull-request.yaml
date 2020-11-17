@@ -11,7 +11,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Sobe docker-compose up
+      - name: Run docker-compose up to create containers
         run: docker-compose up --build -d
-      - name: Roda testes
+      - name: Sleep to give time for MongoDB to set itself up
+        uses: jakejarvis/wait-action@master
+        with:
+          time: "30s"
+      - name: Run tests
         run: docker-compose run --rm server yarn test --forceExit
