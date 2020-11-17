@@ -5,7 +5,7 @@
   "main": "./build/app.js",
   "scripts": {
     "build": "babel src --ignore \"src/**/*.test.js\" --out-dir build",
-    "dev": "babel src --ignore \"src/**/*.test.js\" --out-dir build && nodemon ./build/app.js",
+    "dev": "nodemon",
     "lint": "eslint .",
     "lint-fix": "eslint --fix .",
     "test": "jest"
@@ -21,9 +21,9 @@
   },
   "homepage": "https://github.com/spirabr/backend#readme",
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "mongodb": "^3.6.2",
-    "body-parser": "^1.19.0"
+    "mongodb": "^3.6.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -38,6 +38,17 @@
     "nodemon": "^2.0.4",
     "prettier": "2.1.2",
     "supertest": "^6.0.1"
+  },
+  "nodemonConfig": {
+    "verbose": true,
+    "watch": [
+      "src/"
+    ],
+    "ignore": [
+      "build/*"
+    ],
+    "ext": "js",
+    "exec": "npm run build && node ./build/app.js"
   },
   "jest": {
     "clearMocks": true,
