@@ -9,6 +9,8 @@ describe("'/' route handlers", () => {
   beforeAll(async () => {
     db = await setupDb();
 
+    await db.createCollection("samples");
+
     return db;
   });
 

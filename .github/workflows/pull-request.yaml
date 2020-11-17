@@ -11,11 +11,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Run docker-compose up to create containers
-        run: docker-compose up --build -d
-      - name: Sleep to give time for MongoDB to set itself up
-        uses: jakejarvis/wait-action@master
-        with:
-          time: "30s"
+      - name: Build server image
+        run: docker-compose build
+      - name: Start mongo service
+        run: docker-compose up mongo -d
+      # - name: Sleep to give time for MongoDB to set itself up
+      #   uses: jakejarvis/wait-action@master
+      #   with:
+      #     time: "5s"
       - name: Run tests
         run: docker-compose run --rm server yarn test --forceExit
