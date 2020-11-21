@@ -100,12 +100,18 @@ export async function updateSample(req, res) {
   };
 
   try {
-    const response = await req.dbConnection
+    await req.dbConnection
       .collection("samples")
       .updateOne(
         { patientId },
         { $set: getSampleUpdateObj(updatesFromBody) },
         { upsert: true }
+      );
+
+    const response = await req.dbConnection
+      .collection("samples")
+      .findOne(
+        { patientId }, { projection: { _id: 0 } }
       );
 
     res.status(200).json({ response });
@@ -118,11 +124,11 @@ export async function deleteSampleByPatientId(req, res) {
   const { patientId } = req.params;
 
   try {
-    const response = await req.dbConnection
+    await req.dbConnection
       .collection("samples")
       .deleteOne({ patientId });
 
-    res.status(200).json({ response });
+    res.status(200).json({});
   } catch (err) {
     res.status(404).json(err.message);
   }
