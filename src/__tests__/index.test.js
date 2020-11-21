@@ -145,7 +145,34 @@ describe("'/:patientId' route handlers", () => {
     });
   });
 
-  it.todo("PATCH should return updated sample");
+  it("PATCH should return updated sample", async () =>  {
+    const { body, status } = await request(app).patch("/9124192448").send({
+      collector: {
+        hospital: "Hospital das Clinicas",
+      },
+    });
 
-  it.todo("DELETE should return deleted sample");
+    const expectedResponse = {
+      patientId: "9124192448",
+      collector: {
+        name: "Vinicius",
+        hospital: "Hospital das Clinicas",
+      },
+      audioUrl1: "",
+      audioUrl2: "",
+      audioUrl3: "",
+      audioUrl4: "",
+      timeStamp: "2020-05-10T00:00:00.000Z",
+    };
+
+    expect(status).toBe(200);
+    expect(body.response).toEqual(expectedResponse);
+  });
+
+  it("DELETE should return deleted sample", async () => {
+    const { body, status } = await request(app).delete("/9124192448");
+    
+    expect(status).toBe(200);
+    expect(body).toEqual({});
+  });
 });
