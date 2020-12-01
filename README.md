@@ -75,13 +75,13 @@ O servidor está escutando conexões pela porta 3000 e o MongoDB está escutando
 1. Atualizando informações de uma coleta do paciente com ID 9124192448
 
 ```sh
-$ curl -X PATCH -d '{"collector":{ "hospital":"Hospital das Clínicas"}}' http://localhost:3000/9124192448
+$ curl -X PATCH -H "Content-Type: application/json" -d '{"collector":{ "hospital":"Hospital das Clínicas"}}' http://localhost:3000/9124192448
 ```
 
 2. Criar uma nova coleta para o paciente com ID 12334
 
 ```sh
-$ curl -X POST -d '{"patientId":"12334","collector":{"name":"SPIRA test","hospital":"Test"}}' http://localhost:3000/
+$ curl -X POST -H "Content-Type: application/json" -d '{"patientId":"12334","collector":{"name":"SPIRA test","hospital":"Test"}}' http://localhost:3000/
 ```
 
 ## Executando testes
