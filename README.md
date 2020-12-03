@@ -2,7 +2,7 @@
 
 Repositório para a aplicação do [Spira](https://spira.ime.usp.br/), um novo método de triagem baseado em áudio e inteligência artificial.
 
-## Setup 
+## Setup
 
 O servidor utiliza [Node.js](https://nodejs.org/en/), um runtime de JavaScript. Já o banco de dados, utiliza [MongoDB](https://www.mongodb.com/what-is-mongodb).
 
@@ -16,7 +16,7 @@ Recomendamos que utilize Docker para desenvolver o projeto.
 
 Para executar o servidor:
 
-1. Clone o repositório. 
+1. Clone o repositório.
 
 ```sh
 $ git clone https://github.com/spirabr/backend
@@ -29,6 +29,7 @@ $ docker-compose build
 ```
 
 3. Execute:
+
 ```sh
 $ docker-compose up
 ```
@@ -39,16 +40,17 @@ Com isso, estão inicializados tanto o banco de dados quanto o servidor (em loca
 
 Para subir o servidor sem utilizar Docker:
 
-1. Clone o repositório. 
+1. Clone o repositório.
 
 ```sh
 $ git clone https://github.com/spirabr/backend
 ```
 
 2. É necessário setar as variáveis de ambiente do MongoDB e do Node.Js
-    - MONGO_INITDB_DATABASE (MongoDB)
-    - MONGO_URL (Node.js)
-    - MONGO_DATABASE_NAME (Node.js)
+
+   - MONGO_INITDB_DATABASE (MongoDB)
+   - MONGO_URL (Node.js)
+   - MONGO_DATABASE_NAME (Node.js)
 
 3. Inicie uma instância do MongoDB na porta 27017.
 
@@ -62,13 +64,29 @@ O servidor está escutando conexões pela porta 3000 e o MongoDB está escutando
 
 ## API
 
-| Método | Rota        | Descrição                                                             |
-|--------|-------------|-----------------------------------------------------------------------|
-| GET    | `/`           | Retorna todas as coletas de todos os pacientes.                       |
-| POST   | `/`           | Cria uma nova coleta.                                                 |
+| Método | Rota          | Descrição                                                               |
+| ------ | ------------- | ----------------------------------------------------------------------- |
+| GET    | `/`           | Retorna todas as coletas de todos os pacientes.                         |
+| POST   | `/`           | Cria uma nova coleta.                                                   |
 | GET    | `/:patientId` | Retorna uma coleta do paciente com ID igual a `patientId`.              |
 | PATCH  | `/:patientId` | Atualiza dados sobre uma coleta do paciente com ID igual a `patientId`. |
 | DELETE | `/:patientId` | Deleta uma coleta do paciente com ID igual a `patientId`.               |
+
+### Estrutura exemplo de uma Coleta no banco (em JSON)
+
+```
+{
+    "patientId": "123456789",
+    "collector": {
+      "name": "Vinicius Pereira",
+      "hospital": "Albert Einstein",
+    },
+    "audioUrl1": "http://banco-de-audios.com/audios/1",
+    "audioUrl2": "http://banco-de-audios.com/audios/2",
+    "audioUrl3": "http://banco-de-audios.com/audios/3",
+    "audioUrl4": "http://banco-de-audios.com/audios/4",
+}
+```
 
 ### Exemplos
 
