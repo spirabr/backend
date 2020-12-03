@@ -72,22 +72,6 @@ O servidor está escutando conexões pela porta 3000 e o MongoDB está escutando
 | PATCH  | `/:patientId` | Atualiza dados sobre uma coleta do paciente com ID igual a `patientId`. |
 | DELETE | `/:patientId` | Deleta uma coleta do paciente com ID igual a `patientId`.               |
 
-### Estrutura exemplo de uma Coleta no banco (em JSON)
-
-```
-{
-    "patientId": "123456789",
-    "collector": {
-      "name": "Vinicius Pereira",
-      "hospital": "Albert Einstein",
-    },
-    "audioUrl1": "http://banco-de-audios.com/audios/1",
-    "audioUrl2": "http://banco-de-audios.com/audios/2",
-    "audioUrl3": "http://banco-de-audios.com/audios/3",
-    "audioUrl4": "http://banco-de-audios.com/audios/4",
-}
-```
-
 ### Exemplos
 
 1. Atualizando informações de uma coleta do paciente com ID 9124192448
@@ -100,6 +84,22 @@ $ curl -X PATCH -H "Content-Type: application/json" -d '{"collector":{ "hospital
 
 ```sh
 $ curl -X POST -H "Content-Type: application/json" -d '{"patientId":"12334","collector":{"name":"SPIRA test","hospital":"Test"}}' http://localhost:3000/
+```
+
+### Estrutura exemplo de uma Coleta no banco (em JSON)
+
+```json
+{
+  "patientId": "123456789",
+  "collector": {
+    "name": "Vinicius Pereira",
+    "hospital": "Albert Einstein"
+  },
+  "audioUrl1": "http://banco-de-audios.com/audios/1",
+  "audioUrl2": "http://banco-de-audios.com/audios/2",
+  "audioUrl3": "http://banco-de-audios.com/audios/3",
+  "audioUrl4": "http://banco-de-audios.com/audios/4"
+}
 ```
 
 ## Executando testes
