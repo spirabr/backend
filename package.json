@@ -4,6 +4,7 @@
   "description": "",
   "main": "./build/app.js",
   "scripts": {
+    "start": "npm run build && node build/app.js",
     "build": "babel src --ignore \"src/**/*.test.js\" --out-dir build",
     "dev": "nodemon",
     "lint": "eslint .",
