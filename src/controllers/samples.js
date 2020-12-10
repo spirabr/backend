@@ -1,10 +1,4 @@
-function collectorIsValid(collector) {
-  return collector && collector.name && collector.hospital;
-}
-
-function patientIdIsValid(id) {
-  return typeof id === "string" && id.trim().length > 0;
-}
+import { collectorIsValid, patientIdIsValid } from "../modules/validate";
 
 function getSampleUpdateObj(updatesFromBody) {
   return Object.entries(updatesFromBody).reduce((acc, [key, value]) => {
