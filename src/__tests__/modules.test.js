@@ -49,8 +49,17 @@ describe("validate.js", () => {
     });
 
     describe("patientIdIsValid", () => {
-        it.todo("should return true if patient id is valid");
-        it.todo("should return false if patient id is not a string or an empty string");
-        it.todo("should return false if patient id is a string composed by spaces");
+        it("should return true if patient id is valid", () => {
+            expect(patientIdIsValid("666")).toBe(true);
+        });
+
+        it("should return false if patient id is not a string or an empty string", () => {
+            expect(patientIdIsValid(666)).toBe(false);
+            expect(patientIdIsValid("")).toBe(false);
+        });
+
+        it("should return false if patient id is a string composed by spaces", () => {
+            expect(patientIdIsValid("     ")).toBe(false);
+        });
     });
 });
