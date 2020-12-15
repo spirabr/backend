@@ -17,6 +17,6 @@ export function collectorIsValid(collector) {
   return true;
 }
 
-export function patientIdIsValid(id) {
-  return typeof id === 'string' && id.trim().length > 0;
+export function stringIsValid(str) {
+  return typeof str === 'string' && str.trim().length > 0;
 }
