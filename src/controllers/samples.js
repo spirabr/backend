@@ -1,11 +1,14 @@
-import { collectorIsValid, patientIdIsValid } from "../modules/validate";
+import { collectorIsValid, stringIsValid } from "../modules/validate";
 
 function getSampleUpdateObj(updatesFromBody) {
-  return Object.entries(updatesFromBody).reduce((acc, [key, value]) => {
-    if (value) acc[key] = value;
+  return Object.entries(updatesFromBody).reduce(insertTruthyValues, {});
+}
 
-    return acc;
-  }, {});
+function insertTruthyValues(acc, [key, value]) {
+  if (value && typeof value === "object" && Object.keys(value).length > 0) acc[key] = Object.entries(value).reduce(insertTruthyValues, {});
+  else if (value && typeof value !== "object") acc[key] = value;
+
+  return acc;
 }
 
 export async function getAll(req, res) {
@@ -20,7 +23,7 @@ export async function getAll(req, res) {
 export async function create(req, res) {
   const { patientId, collector } = req.body;
 
-  if (!patientIdIsValid(patientId) || !collectorIsValid(collector)) {
+  if (!stringIsValid(patientId) || !collectorIsValid(collector)) {
     res.status(400).send("Patient id or collector data is invalid.");
     return;
   }
