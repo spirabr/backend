@@ -3,11 +3,7 @@ import MongoClient from "mongodb";
 export const setupDb = async () => {
   try {
     const connection = await MongoClient.connect(process.env.MONGODB_URL);
-    const isTest = process.env.NODE_ENV === "test";
-
-    const dbName = `${process.env.MONGODB_DATABASE_NAME}${
-      isTest ? "_test" : ""
-    }`;
+    const dbName = getDbName();
 
     return connection.db(dbName);
   } catch (error) {
@@ -28,3 +24,9 @@ export default async (req, res, next) => {
 
   next();
 };
+
+const getDbName = () => {
+  const isTestEnv = process.env.NODE_ENV === "test";
+
+  return `${process.env.MONGODB_DATABASE_NAME}${isTestEnv ? "_test" : ""}`;
+}
