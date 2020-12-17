@@ -42,7 +42,8 @@ export async function createSample(req, res) {
   };
 
   try {
-    if (insertSample(req, sample)) {
+    if (await insertSample(req, sample)) {
+      //delete sample._id;
       res.status(201).json({ response: sample });
 
       return;
@@ -56,8 +57,8 @@ export async function createSample(req, res) {
 
 async function insertSample(req, sample){
   const insertionResult = await req.dbConnection
-    .collection("samples")
-    .insertOne(sample);
+  .collection("samples")
+  .insertOne(sample);
   delete sample._id;
 
   return insertionResult.result.ok;
