@@ -1,7 +1,7 @@
 import express from "express";
 import {
   getAll,
-  create,
+  createSample,
   getSampleByPatientId,
   updateSample,
   deleteSampleByPatientId,
@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.get("/", mongoMiddleware, getAll);
 
-router.post("/", mongoMiddleware, create);
+router.post("/", mongoMiddleware, createSample);
 
 router.get("/:patientId", mongoMiddleware, getSampleByPatientId);
 
