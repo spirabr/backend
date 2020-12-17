@@ -1,3 +1,4 @@
+import { response } from "express";
 import { collectorIsValid, stringIsValid } from "../modules/validate";
 
 function getSampleUpdateObj(updatesFromBody) {
@@ -5,7 +6,9 @@ function getSampleUpdateObj(updatesFromBody) {
 }
 
 function insertTruthyValues(acc, [key, value]) {
-  if (value && typeof value === "object" && Object.keys(value).length > 0) acc[key] = Object.entries(value).reduce(insertTruthyValues, {});
+  if (value && typeof value === "object" && Object.keys(value).length > 0) {
+    acc[key] = Object.entries(value).reduce(insertTruthyValues, {});
+  }
   else if (value && typeof value !== "object") acc[key] = value;
 
   return acc;
@@ -20,11 +23,12 @@ export async function getAll(req, res) {
   res.status(200).json({ data: response });
 }
 
-export async function create(req, res) {
+export async function createSample(req, res) {
   const { patientId, collector } = req.body;
 
   if (!stringIsValid(patientId) || !collectorIsValid(collector)) {
     res.status(400).send("Patient id or collector data is invalid.");
+    
     return;
   }
 
@@ -38,16 +42,8 @@ export async function create(req, res) {
   };
 
   try {
-    const insertionResult = await req.dbConnection
-      .collection("samples")
-      .insertOne(sample);
-
-    if (insertionResult.result.ok) {
-      const { _id, ...sampleWithoutId } = sample;
-
-      const response = sampleWithoutId;
-
-      res.status(201).json({ response });
+    if (insertSample(req, sample)) {
+      res.status(201).json({ response: sample });
 
       return;
     }
@@ -56,6 +52,15 @@ export async function create(req, res) {
   } catch (err) {
     res.status(500).json(err.message);
   }
+}
+
+async function insertSample(req, sample){
+  const insertionResult = await req.dbConnection
+    .collection("samples")
+    .insertOne(sample);
+  delete sample._id;
+
+  return insertionResult.result.ok;
 }
 
 export async function getSampleByPatientId(req, res) {
@@ -86,9 +91,7 @@ export async function updateSample(req, res) {
       name:
         collector && collector.name ? collector.name : sample.collector.name,
       hospital:
-        collector && collector.hospital
-          ? collector.hospital
-          : sample.collector.hospital,
+        collector && collector.hospital ? collector.hospital : sample.collector.hospital,
     },
     audioUrl1,
     audioUrl2,
