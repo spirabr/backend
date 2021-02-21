@@ -3,14 +3,7 @@ export function collectorIsValid(collector) {
     return false;
   }
 
-  if (typeof collector.name !== 'string' || collector.name.trim().length <= 0) {
-    return false;
-  }
-
-  if (
-    typeof collector.hospital !== 'string' ||
-    collector.hospital.trim().length <= 0
-  ) {
+  if (!stringIsValid(collector.name) || !stringIsValid(collector.hospital)) {
     return false;
   }
 
