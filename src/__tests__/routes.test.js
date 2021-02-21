@@ -1,8 +1,8 @@
-import request from "supertest";
+import request from 'supertest';
 
-import { app } from "../app";
-import { setupDb } from "../db/mongoConnection";
-import { mockedSamples } from "../__fixtures__";
+import { app } from '../app';
+import { setupDb } from '../db/mongoConnection';
+import { mockedSamples } from '../__fixtures__';
 
 describe("'/' route handlers", () => {
   let db;
@@ -10,93 +10,93 @@ describe("'/' route handlers", () => {
   beforeAll(async () => {
     db = await setupDb();
 
-    await db.createCollection("samples");
+    await db.createCollection('samples');
 
     return db;
   });
 
   beforeEach(async () => {
-    await db.collection("samples").drop();
+    await db.collection('samples').drop();
 
-    await db.createCollection("samples");
+    await db.createCollection('samples');
 
-    await db.collection("samples").insertMany(mockedSamples);
+    await db.collection('samples').insertMany(mockedSamples);
   });
 
   afterAll(async () => {
-    await db.collection("samples").drop();
+    await db.collection('samples').drop();
     db.close();
   });
 
-  it("GET should return all samples", async () => {
-    const { body } = await request(app).get("/");
+  it('GET should return all samples', async () => {
+    const { body } = await request(app).get('/');
 
     expect(body.data).toEqual([
       {
-        patientId: "9124192448",
+        patientId: '9124192448',
         collector: {
-          name: "Vinicius",
-          hospital: "Albert Einstein",
+          name: 'Vinicius',
+          hospital: 'Albert Einstein',
         },
-        audioUrl1: "",
-        audioUrl2: "",
-        audioUrl3: "",
-        audioUrl4: "",
-        timeStamp: "2020-05-10T00:00:00.000Z",
+        audioUrl1: '',
+        audioUrl2: '',
+        audioUrl3: '',
+        audioUrl4: '',
+        timeStamp: '2020-05-10T00:00:00.000Z',
       },
       {
-        patientId: "9124191240",
+        patientId: '9124191240',
         collector: {
-          name: "Ricardo",
-          hospital: "Albert Einstein",
+          name: 'Ricardo',
+          hospital: 'Albert Einstein',
         },
-        audioUrl1: "",
-        audioUrl2: "",
-        audioUrl3: "",
-        audioUrl4: "",
-        timeStamp: "2020-04-20T00:00:00.000Z",
+        audioUrl1: '',
+        audioUrl2: '',
+        audioUrl3: '',
+        audioUrl4: '',
+        timeStamp: '2020-04-20T00:00:00.000Z',
       },
       {
-        patientId: "9124112440",
+        patientId: '9124112440',
         collector: {
-          name: "Thais",
-          hospital: "Albert Einstein",
+          name: 'Thais',
+          hospital: 'Albert Einstein',
         },
-        audioUrl1: "",
-        audioUrl2: "",
-        audioUrl3: "",
-        audioUrl4: "",
-        timeStamp: "2020-05-30T00:00:00.000Z",
+        audioUrl1: '',
+        audioUrl2: '',
+        audioUrl3: '',
+        audioUrl4: '',
+        timeStamp: '2020-05-30T00:00:00.000Z',
       },
     ]);
   });
 
-  it("POST should return created sample", async () => {
+  it('POST should return created sample', async () => {
     const { body, status } = await request(app)
-      .post("/")
+      .post('/')
       .send({
-        patientId: "12334",
-        collector: { name: "SPIRA test", hospital: "Test" },
+        patientId: '12334',
+        collector: { name: 'SPIRA test', hospital: 'Test' },
       });
 
     expect(status).toBe(201);
 
     expect(body.response).toEqual({
-      patientId: "12334",
-      collector: { name: "SPIRA test", hospital: "Test" },
-      audioUrl1: "",
-      audioUrl2: "",
-      audioUrl3: "",
-      audioUrl4: "",
+      patientId: '12334',
+      collector: { name: 'SPIRA test', hospital: 'Test' },
+      audioUrl1: '',
+      audioUrl2: '',
+      audioUrl3: '',
+      audioUrl4: '',
     });
   });
 
-  it("POST should return status code 400 if input is invalid", async () => {
+  it('POST should return status code 400 if input is invalid', async () => {
     const { status } = await request(app)
-      .post("/")
+      .post('/')
       .send({
-        patientId: "",
-        collector: { hospital: "Test" },
+        patientId: '',
+        collector: { hospital: 'Test' },
       });
 
     expect(status).toBe(400);
@@ -109,69 +109,71 @@ describe("'/:patientId' route handlers", () => {
   beforeAll(async () => {
     db = await setupDb();
 
-    await db.createCollection("samples");
+    await db.createCollection('samples');
 
     return db;
   });
 
   beforeEach(async () => {
-    await db.collection("samples").drop();
+    await db.collection('samples').drop();
 
-    await db.createCollection("samples");
+    await db.createCollection('samples');
 
-    await db.collection("samples").insertMany(mockedSamples);
+    await db.collection('samples').insertMany(mockedSamples);
   });
 
   afterAll(async () => {
-    await db.collection("samples").drop();
+    await db.collection('samples').drop();
     db.close();
   });
 
-  it("GET should return valid sample", async () => {
-    const { body, status } = await request(app).get("/9124192448");
+  it('GET should return valid sample', async () => {
+    const { body, status } = await request(app).get('/9124192448');
 
     expect(status).toBe(200);
     expect(body.response).toEqual({
-      patientId: "9124192448",
+      patientId: '9124192448',
       collector: {
-        name: "Vinicius",
-        hospital: "Albert Einstein",
+        name: 'Vinicius',
+        hospital: 'Albert Einstein',
       },
-      audioUrl1: "",
-      audioUrl2: "",
-      audioUrl3: "",
-      audioUrl4: "",
-      timeStamp: "2020-05-10T00:00:00.000Z",
+      audioUrl1: '',
+      audioUrl2: '',
+      audioUrl3: '',
+      audioUrl4: '',
+      timeStamp: '2020-05-10T00:00:00.000Z',
     });
   });
 
-  it("PATCH should return updated sample", async () =>  {
-    const { body, status } = await request(app).patch("/9124192448").send({
-      collector: {
-        hospital: "Hospital das Clinicas",
-      },
-    });
+  it('PATCH should return updated sample', async () => {
+    const { body, status } = await request(app)
+      .patch('/9124192448')
+      .send({
+        collector: {
+          hospital: 'Hospital das Clinicas',
+        },
+      });
 
     const expectedResponse = {
-      patientId: "9124192448",
+      patientId: '9124192448',
       collector: {
-        name: "Vinicius",
-        hospital: "Hospital das Clinicas",
+        name: 'Vinicius',
+        hospital: 'Hospital das Clinicas',
       },
-      audioUrl1: "",
-      audioUrl2: "",
-      audioUrl3: "",
-      audioUrl4: "",
-      timeStamp: "2020-05-10T00:00:00.000Z",
+      audioUrl1: '',
+      audioUrl2: '',
+      audioUrl3: '',
+      audioUrl4: '',
+      timeStamp: '2020-05-10T00:00:00.000Z',
     };
 
     expect(status).toBe(200);
     expect(body.response).toEqual(expectedResponse);
   });
 
-  it("DELETE should return deleted sample", async () => {
-    const { body, status } = await request(app).delete("/9124192448");
-    
+  it('DELETE should return deleted sample', async () => {
+    const { body, status } = await request(app).delete('/9124192448');
+
     expect(status).toBe(200);
     expect(body).toEqual({});
   });
