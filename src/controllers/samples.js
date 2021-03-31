@@ -1,4 +1,3 @@
-import { response } from "express";
 import { collectorIsValid, stringIsValid } from "../modules/validate";
 
 function getSampleUpdateObj(updatesFromBody) {
@@ -43,7 +42,7 @@ export async function createSample(req, res) {
 
   try {
     if (await insertSample(req, sample)) {
-      //delete sample._id;
+      // delete sample._id;
       res.status(201).json({ response: sample });
 
       return;
