@@ -49,7 +49,7 @@ $ git clone https://github.com/spirabr/backend
 2. É necessário setar as variáveis de ambiente do MongoDB e do Node.Js
 
    - MONGO_INITDB_DATABASE (MongoDB)
-   - MONGO_URL (Node.js)
+   - MONGODB_URL (Node.js)
    - MONGO_DATABASE_NAME (Node.js)
 
 3. Inicie uma instância do MongoDB na porta 27017.
