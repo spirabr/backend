@@ -5,8 +5,8 @@
   "main": "./build/app.js",
   "scripts": {
     "start": "node build/app.js",
-    "build": "babel src --ignore \"src/**/*.test.js\" --out-dir build",
-    "dev": "nodemon",
+    "build": "babel src --ignore \"src/**/*.test.js\" --out-dir build --source-maps",
+    "dev": "nodemon build/app.js --inspect --exec babel-node",
     "lint": "eslint .",
     "lint-fix": "eslint --fix .",
     "test": "jest"
