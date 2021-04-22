@@ -58,7 +58,7 @@ async function insertSample(req, sample){
   const insertionResult = await req.dbConnection
   .collection("samples")
   .insertOne(sample);
-  delete sample._id;
+  // delete sample._id;
 
   return insertionResult.result.ok;
 }

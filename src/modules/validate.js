@@ -3,7 +3,7 @@ export function collectorIsValid(collector) {
     return false;
   }
 
-  if (!stringIsValid(collector.name) || !stringIsValid(collector.hospital)) {
+  if (!stringIsValid(collector.hospital)) {
     return false;
   }
 
