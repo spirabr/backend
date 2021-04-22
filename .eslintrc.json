@@ -11,6 +11,7 @@
   "rules": {
     "import/extensions": 0,
     "no-use-before-define": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "no-underscore-dangle": "off"
   }
 }
